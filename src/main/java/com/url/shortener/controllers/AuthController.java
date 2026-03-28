@@ -20,7 +20,7 @@ public class AuthController {
 
     @PostMapping("/public/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest){
-
+        return ResponseEntity.ok(userService.loginUser(loginRequest));
     }
 
     @PostMapping("/public/register")
