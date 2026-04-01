@@ -1,6 +1,8 @@
 package com.url.shortener.services;
 
 import com.url.shortener.dto.LoginRequest;
+import com.url.shortener.dto.RegisterRequest;
+import com.url.shortener.dto.RegisterResponse;
 import com.url.shortener.models.User;
 import com.url.shortener.repositories.UserRepository;
 import com.url.shortener.security.jwt.JwtAuthenticationResponse;
@@ -10,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +24,15 @@ public class UserService {
     private AuthenticationManager authenticationManager;
     private JwtUtils jwtUtils;
 
-    public User registerUser(User user){
+    public RegisterResponse registerUser(RegisterRequest registerRequest){
+        User user = new User();
+        user.setUsername(registerRequest.getUsername());
+        user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        user.setRole("ROLE_USER");
+
+        User savedUser = userRepository.save(user);
+        return mapToResponse(savedUser);
     }
 
     public JwtAuthenticationResponse loginUser(LoginRequest loginRequest){
@@ -34,5 +43,20 @@ public class UserService {
                 String jwt = jwtUtils.generateToken(userDetails);
 
         return new JwtAuthenticationResponse(jwt);
+    }
+
+    public User findByUsername(String name) {
+        return userRepository.findByUsername(name).orElseThrow(
+                () -> new UsernameNotFoundException("User not found with username: " + name)
+        );
+    }
+
+    private RegisterResponse mapToResponse(User savedUser) {
+        RegisterResponse response = new RegisterResponse();
+        response.setId(savedUser.getId());
+        response.setUsername(savedUser.getUsername());
+        response.setEmail(savedUser.getEmail());
+
+        return response;
     }
 }

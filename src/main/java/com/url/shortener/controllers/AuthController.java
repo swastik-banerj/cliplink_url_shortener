@@ -2,7 +2,6 @@ package com.url.shortener.controllers;
 
 import com.url.shortener.dto.LoginRequest;
 import com.url.shortener.dto.RegisterRequest;
-import com.url.shortener.models.User;
 import com.url.shortener.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +24,6 @@ public class AuthController {
 
     @PostMapping("/public/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest){
-        User user = new User();
-        user.setUsername(registerRequest.getUsername());
-        user.setEmail(registerRequest.getEmail());
-        user.setPassword(registerRequest.getPassword());
-        user.setRole("ROLE_USER");
-        return ResponseEntity.ok(userService.registerUser(user));
+        return ResponseEntity.ok(userService.registerUser(registerRequest));
     }
 }
