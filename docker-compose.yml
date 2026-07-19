@@ -27,6 +27,9 @@ services:
       DB_URL: jdbc:mysql://mysql:3306/urlshortenerdb
       DB_USER: clipuser
       DB_PASSWORD: clip123
+      JWT_SECRET: your-super-secret-key-that-is-at-least-32-characters-long
+      JWT_EXP: 86400000
+
 
 volumes:
   mysql_data:
