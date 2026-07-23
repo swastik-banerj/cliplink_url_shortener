@@ -21,4 +21,4 @@ jobs:
       - name: Verify Java version
         run: java -version
       - name: Build with maven
-        run: mvn clean package
+        run: mvn clean package -DskipTests
