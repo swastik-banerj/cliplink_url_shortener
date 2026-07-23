@@ -1,5 +1,4 @@
 name: ClipLink CI
-
 on:
   push:
     branches:
@@ -44,4 +43,4 @@ jobs:
             swastik79/cliplink:latest
             swastik79/cliplink:${{ github.sha }}
           cache-from: type=gha
-          cache-to: type=gha, mode=max
+          cache-to: type=gha,mode=max
