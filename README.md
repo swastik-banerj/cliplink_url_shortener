@@ -91,17 +91,6 @@ Swagger UI is available after starting the application:
 ```
 http://localhost:8080/swagger-ui/index.html
 ```
-
-## Future Improvements
-
-- Custom aliases for shortened URLs
-- URL analytics and click tracking
-- Expiring URLs
-- Rate limiting
-- QR code generation
-- Docker Compose support
-- Cloud deployment
-
 ## Author
 
 **Swastik Banerjee**
