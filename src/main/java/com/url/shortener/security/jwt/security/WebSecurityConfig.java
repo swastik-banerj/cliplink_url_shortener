@@ -1,7 +1,9 @@
 package com.url.shortener.security.jwt.security;
 
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import com.url.shortener.security.jwt.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -53,7 +56,7 @@ public class WebSecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/public/register").permitAll()
+                        .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/{shortUrl}").permitAll()
                         .requestMatchers("/api/urls/**").authenticated()
                         .requestMatchers("/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
@@ -65,5 +68,22 @@ public class WebSecurityConfig {
         // adds jwtAuthenticationFilter() filter before UsernamePasswordAuthenticationFilter.class filter
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    @Value("${frontend.url}")
+    public String frontendUrl;
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer(){
+        return new WebConfig(){
+            @Override
+            public void addCorsMappings(CorsRegistry registry){
+                registry.addMapping("/**")
+                        .allowedOrigins(frontendUrl)
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
     }
 }
