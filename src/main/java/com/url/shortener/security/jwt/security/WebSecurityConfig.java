@@ -64,7 +64,7 @@ public class WebSecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/public/**").permitAll()
+                        .requestMatchers("/api/auth/public/**").permitAll()
                         .requestMatchers("/{shortUrl}").permitAll()
                         .requestMatchers("/api/urls/**").authenticated()
                         .requestMatchers(
