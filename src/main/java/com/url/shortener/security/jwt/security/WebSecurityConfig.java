@@ -30,7 +30,6 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@AllArgsConstructor
 public class WebSecurityConfig {
 
     private final UserDetailsService userDetailsService;
