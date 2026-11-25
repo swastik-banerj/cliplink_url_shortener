@@ -34,6 +34,9 @@ import java.util.List;
 public class WebSecurityConfig {
 
     private final UserDetailsService userDetailsService;
+    public WebSecurityConfig(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter(){
